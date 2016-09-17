@@ -17,11 +17,11 @@ import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 
 public class MysqlPaginationPlugin extends PluginAdapter {
-	private String pageClass = "io.vergil.common.lang.message.Pagination2";
+
+	private String pageClass = "com.htdc.common.lang.message.Pagination2";
 
 	@Override
 	public boolean modelExampleClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-		// add field, getter, setter for limit clause
 		addPage(topLevelClass, introspectedTable, "page");
 		return super.modelExampleClassGenerated(topLevelClass, introspectedTable);
 	}
@@ -29,27 +29,28 @@ public class MysqlPaginationPlugin extends PluginAdapter {
 	@Override
 	public boolean sqlMapSelectByExampleWithoutBLOBsElementGenerated(XmlElement element,
 			IntrospectedTable introspectedTable) {
-		XmlElement xmlElement = new XmlElement("if");
-		xmlElement.addAttribute(new Attribute("test", "page != null"));
-		xmlElement.addElement(new TextElement("limit #{page.begin} , #{page.end}"));
-		element.addElement(xmlElement);
+
+		XmlElement page = new XmlElement("if");
+		page.addAttribute(new Attribute("test", "page != null"));
+		page.addElement(new TextElement("limit #{page.begin} , #{page.pageSize}"));
+		element.addElement(page);
 		return super.sqlMapUpdateByExampleWithoutBLOBsElementGenerated(element, introspectedTable);
 	}
 
 	@Override
 	public boolean sqlMapSelectByExampleWithBLOBsElementGenerated(XmlElement element,
 			IntrospectedTable introspectedTable) {
-		XmlElement xmlElement = new XmlElement("if");
-		xmlElement.addAttribute(new Attribute("test", "page != null"));
-		xmlElement.addElement(new TextElement("limit #{page.begin} , #{page.end}"));
-		element.addElement(xmlElement);
-		return super.sqlMapUpdateByExampleWithoutBLOBsElementGenerated(element, introspectedTable);
+
+		XmlElement page = new XmlElement("if");
+		page.addAttribute(new Attribute("test", "page != null"));
+		page.addElement(new TextElement("limit #{page.begin} , #{page.pageSize}"));
+		element.addElement(page);
+		return super.sqlMapUpdateByExampleWithBLOBsElementGenerated(element, introspectedTable);
 	}
 
 	@Override
 	public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass,
 			IntrospectedTable introspectedTable) {
-		// 添加spring注解
 		interfaze.addImportedType(new FullyQualifiedJavaType("org.springframework.stereotype.Repository"));
 		interfaze.addAnnotation("@Repository");
 		return super.clientGenerated(interfaze, topLevelClass, introspectedTable);
