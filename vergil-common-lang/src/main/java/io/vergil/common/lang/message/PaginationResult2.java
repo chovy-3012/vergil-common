@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class PaginationResult2<T> {
 	private List<T> results;
-	private Pagination2 pagination2;
+	private Pagination2 pagination;
 
 	public List<T> getResults() {
 		return results;
@@ -21,12 +21,12 @@ public class PaginationResult2<T> {
 		this.results = results;
 	}
 
-    public Pagination2 getPagination2() {
-        return pagination2;
-    }
+	public Pagination2 getPagination() {
+		return pagination;
+	}
 
-    public void setPagination2(Pagination2 pagination2) {
-        this.pagination2 = pagination2;
-    }
+	public void setPagination(Pagination2 pagination) {
+		this.pagination = pagination;
+	}
 
 }
